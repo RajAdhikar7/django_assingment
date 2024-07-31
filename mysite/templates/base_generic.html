@@ -28,13 +28,20 @@
         nav ul li {
             margin: 0 1rem;
         }
-        nav ul li a {
+        nav ul li a, nav ul li button {
             color: #fff;
             text-decoration: none;
             font-weight: bold;
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
         }
-        nav ul li a:hover {
-            text-decoration: underline;
+        nav ul li a:hover, nav ul li button:hover {
+            background-color: #555;
+            color: #fff;
         }
         main {
             flex: 1; /* Allows the main section to take up remaining space */
@@ -50,6 +57,9 @@
             background-color: #333;
             color: #fff;
         }
+        form {
+            display: inline; /* Ensures the form is inline with the list item */
+        }
     </style>
 </head>
 <body>
@@ -59,7 +69,12 @@
                 <li><a href="{% url 'home' %}">Home</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                    <li>
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit">Logout</button>
+                        </form>
+                    </li>
                 {% else %}
                     <li><a href="{% url 'login' %}">Login</a></li>
                     <li><a href="{% url 'signup' %}">Sign Up</a></li>

@@ -1,0 +1,65 @@
+# Django
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+db.sqlite3
+media/
+staticfiles/
+
+# Environment
+.env
+*.env
+
+# Django-specific
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+local_settings.py
+db.sqlite3
+staticfiles/
+media/
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+.virtualenv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDEs and editors
+.vscode/
+.idea/
+*.suo
+*.ntvs_analysis.dat
+*.ncb
+*.swp
+*.swo
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Coverage reports
+coverage.xml
+*.cover
+*.py,cover
+*.nib
+*.cov
+nosetests.xml
+test_*.xml
