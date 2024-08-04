@@ -1,0 +1,28 @@
+{% extends "base_generic.html" %}
+
+{% block title %}My Blog Posts{% endblock %}
+
+{% block content %}
+<h2>Blog Posts by Category</h2>
+
+{% for category, posts in category_dict.items %}
+    {% with categories.category as category_name %}
+        <h3>{{ category_name }}</h3>
+    {% endwith %}
+    <ul>
+        {% for post in posts %}
+        <li>
+            <h4>{{ post.title }}</h4>
+            {% if post.image %}
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" width="200" height="100">
+            {% endif %}
+            <p>
+                {% with post.summary|truncatewords:15 as truncated_summary %}
+                    {{ truncated_summary }}{% if post.summary|length > truncated_summary|length %}...{% endif %}
+                {% endwith %}
+            </p>
+        </li>
+        {% endfor %}
+    </ul>
+{% endfor %}
+{% endblock %}

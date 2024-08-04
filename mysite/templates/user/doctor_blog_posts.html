@@ -1,0 +1,23 @@
+{% extends "base_generic.html" %}
+
+{% block title %}My Blog Posts{% endblock %}
+
+{% block content %}
+<h2>{{ doctor_name }}'s (doctor) Blog Posts</h2>
+<ul style="list-style-type: none; padding: 0;">
+    {% for post in blog_posts %}
+    <li style="margin-bottom: 30px; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+        <h3>{{ post.title }}</h3>
+        {% if post.image %}
+        <div style="text-align: center;">
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" style="width: 300px; height: 150px; object-fit: cover;">
+        </div>
+        {% endif %}
+        <p>{{ post.content }}</p>
+        <p>{{ post.summary }}</p>
+        <p>Status: {{ post.get_status_display }}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
+0.

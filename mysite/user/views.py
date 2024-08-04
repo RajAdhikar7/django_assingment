@@ -2,8 +2,8 @@
 # Create your views here.
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from .forms import CustomUserCreationForm
-from .models import PatientProfile, DoctorProfile 
+from .forms import CustomUserCreationForm , BlogPostForm
+from .models import PatientProfile, DoctorProfile  , BlogPost 
 from django.contrib.auth.decorators import login_required 
 
 
@@ -44,3 +44,40 @@ def patient_dashboard_view(request):
 @login_required
 def doctor_dashboard_view(request):
     return render(request, 'user/doctor_dashboard.html')
+
+
+@login_required
+def create_blog_post_view(request):
+    if request.user.user_type != 'doctor':
+        return redirect('home')
+    
+    if request.method == 'POST':
+        form = BlogPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            blog_post = form.save(commit=False)
+            blog_post.author = request.user
+            blog_post.save()
+            return redirect('doctor_blog_posts')
+    else:
+        form = BlogPostForm()
+    
+    return render(request, 'user/create_blog_post.html', {'form': form})
+
+@login_required
+def doctor_blog_posts_view(request):
+    if request.user.user_type != 'doctor':
+        return redirect('home')
+    
+    blog_posts = BlogPost.objects.filter(author=request.user)
+    return render(request, 'user/doctor_blog_posts.html', {'blog_posts': blog_posts,'doctor_name': request.user.username})
+
+@login_required
+def blog_posts_view(request):
+    if request.user.user_type != 'patient':
+        return redirect('home')
+    
+    blog_posts = BlogPost.objects.filter(status='published').order_by('-created_at')
+    categories = dict(BlogPost.CATEGORY_CHOICES)
+    category_dict = {category_key: blog_posts.filter(category=category_key) for category_key, category in categories.items()}
+    
+    return render(request, 'user/blog_posts.html', {'categories': categories, 'category_dict': category_dict})

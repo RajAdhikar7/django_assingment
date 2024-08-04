@@ -82,10 +82,15 @@ AUTH_USER_MODEL = 'user.CustomUser'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'doctor_blog',
+        'USER': 'root',  # Default user in XAMPP
+        'PASSWORD': '',  # Default password is empty in XAMPP
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
+
 
 
 # Password validation

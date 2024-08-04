@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+
+{% block title %}Create Blog Post{% endblock %}
+
+{% block content %}
+<h2>Create Blog Post</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+{% endblock %}

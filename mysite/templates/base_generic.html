@@ -69,6 +69,12 @@
                 <li><a href="{% url 'home' %}">Home</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                    {% if user.user_type == 'doctor' %}
+                        <li><a href="{% url 'create_blog_post' %}">Create Blog Post</a></li>
+                        <li><a href="{% url 'doctor_blog_posts' %}">View My Blog Posts</a></li>
+                    {% elif user.user_type == 'patient' %}
+                        <li><a href="{% url 'blog_posts' %}">View Blog Posts</a></li>
+                    {% endif %}
                     <li>
                         <form action="{% url 'logout' %}" method="post">
                             {% csrf_token %}

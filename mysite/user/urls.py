@@ -1,7 +1,10 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
-from .views import signup_view, dashboard_view, patient_dashboard_view, doctor_dashboard_view, home_view
-
+from .views import (
+    signup_view, dashboard_view, patient_dashboard_view, 
+    doctor_dashboard_view, home_view, create_blog_post_view,
+    doctor_blog_posts_view, blog_posts_view
+)
 
 urlpatterns = [
     path('', home_view, name='home'),
@@ -11,4 +14,7 @@ urlpatterns = [
     path('dashboard/', dashboard_view, name='dashboard'),
     path('patient_dashboard/', patient_dashboard_view, name='patient_dashboard'),
     path('doctor_dashboard/', doctor_dashboard_view, name='doctor_dashboard'),
+    path('create_blog_post/', create_blog_post_view, name='create_blog_post'),
+    path('doctor_blog_posts/', doctor_blog_posts_view, name='doctor_blog_posts'),
+    path('blog_posts/', blog_posts_view, name='blog_posts'),
 ]

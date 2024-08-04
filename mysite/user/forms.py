@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser
+from .models import CustomUser , BlogPost 
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
@@ -22,3 +22,14 @@ class CustomUserCreationForm(UserCreationForm):
             self.add_error('password2', "Passwords do not match.")
         
         return cleaned_data
+
+
+class BlogPostForm(forms.ModelForm):
+    class Meta:
+        model = BlogPost
+        fields = ['title', 'image', 'category', 'summary', 'content', 'status']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['summary'].widget = forms.Textarea(attrs={'rows': 2})
+        self.fields['content'].widget = forms.Textarea(attrs={'rows': 10})  
