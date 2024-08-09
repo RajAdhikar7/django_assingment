@@ -4,6 +4,11 @@ from django.db import models
 
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
+from django.utils import timezone
+from datetime import datetime, timedelta
+
+
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, username, password=None, **extra_fields):
         if not email:
@@ -36,7 +41,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
+    profile_picture = models.ImageField(upload_to='profile_pics/')
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True)
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
@@ -88,4 +93,20 @@ class BlogPost(models.Model):
     def __str__(self):
         return self.title  
     
+
+class Appointment(models.Model):
+    patient = models.ForeignKey(CustomUser, related_name='appointments', on_delete=models.CASCADE)
+    doctor = models.ForeignKey(CustomUser, related_name='appointments_received', on_delete=models.CASCADE)
+    speciality = models.CharField(max_length=100)
+    date = models.DateField()
+    start_time = models.TimeField()
+    end_time = models.TimeField(editable=False)  # Auto-calculated
+
+    def save(self, *args, **kwargs):
+        if not self.end_time:
+            self.end_time = (datetime.combine(self.date, self.start_time) + timedelta(minutes=45)).time()
+        super(Appointment, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Appointment with {self.doctor} on {self.date} at {self.start_time}"
 

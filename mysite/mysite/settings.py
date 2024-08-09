@@ -77,6 +77,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 AUTH_USER_MODEL = 'user.CustomUser'
 
+# Path to  Google service account credentials JSON file
+GOOGLE_SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR, 'credentials', 'service_account.json')
+
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 

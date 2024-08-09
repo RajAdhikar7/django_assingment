@@ -74,6 +74,7 @@
                         <li><a href="{% url 'doctor_blog_posts' %}">View My Blog Posts</a></li>
                     {% elif user.user_type == 'patient' %}
                         <li><a href="{% url 'blog_posts' %}">View Blog Posts</a></li>
+                        <li><a href="{% url 'doctor_list' %}">Book Appointment</a></li>
                     {% endif %}
                     <li>
                         <form action="{% url 'logout' %}" method="post">

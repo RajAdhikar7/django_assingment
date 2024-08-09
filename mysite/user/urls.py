@@ -3,7 +3,8 @@ from django.contrib.auth.views import LoginView, LogoutView
 from .views import (
     signup_view, dashboard_view, patient_dashboard_view, 
     doctor_dashboard_view, home_view, create_blog_post_view,
-    doctor_blog_posts_view, blog_posts_view
+    doctor_blog_posts_view, blog_posts_view ,  doctor_list_view, 
+    book_appointment_view , appointment_confirmation_view
 )
 
 urlpatterns = [
@@ -17,4 +18,7 @@ urlpatterns = [
     path('create_blog_post/', create_blog_post_view, name='create_blog_post'),
     path('doctor_blog_posts/', doctor_blog_posts_view, name='doctor_blog_posts'),
     path('blog_posts/', blog_posts_view, name='blog_posts'),
+    path('doctors/', doctor_list_view, name='doctor_list'),
+    path('book_appointment/<int:doctor_id>/', book_appointment_view, name='book_appointment'),
+    path('appointment_confirmation/<int:appointment_id>/', appointment_confirmation_view, name='appointment_confirmation'),
 ]

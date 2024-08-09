@@ -1,10 +1,11 @@
 
 # Create your views here.
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
-from .forms import CustomUserCreationForm , BlogPostForm
-from .models import PatientProfile, DoctorProfile  , BlogPost 
+from .forms import CustomUserCreationForm , BlogPostForm ,  AppointmentForm
+from .models import PatientProfile, DoctorProfile  , BlogPost  , CustomUser , Appointment 
 from django.contrib.auth.decorators import login_required 
+from .utils import create_google_calendar_event
 
 
 
@@ -81,3 +82,30 @@ def blog_posts_view(request):
     category_dict = {category_key: blog_posts.filter(category=category_key) for category_key, category in categories.items()}
     
     return render(request, 'user/blog_posts.html', {'categories': categories, 'category_dict': category_dict})
+
+
+@login_required
+def doctor_list_view(request):
+    doctors = CustomUser.objects.filter(user_type='doctor')
+    return render(request, 'user/doctor_list.html', {'doctors': doctors})
+
+@login_required
+def book_appointment_view(request, doctor_id):
+    doctor = get_object_or_404(CustomUser, pk=doctor_id, user_type='doctor')
+    if request.method == 'POST':
+        form = AppointmentForm(request.POST)
+        if form.is_valid():
+            appointment = form.save(commit=False)
+            appointment.patient = request.user
+            appointment.doctor = doctor
+            appointment.save()
+            create_google_calendar_event(appointment)  # Function to handle Google Calendar API
+            return redirect('appointment_confirmation', appointment_id=appointment.id)
+    else:
+        form = AppointmentForm()
+    return render(request, 'user/book_appointment.html', {'form': form, 'doctor': doctor})
+
+@login_required
+def appointment_confirmation_view(request, appointment_id):
+    appointment = get_object_or_404(Appointment, pk=appointment_id)
+    return render(request, 'user/appointment_confirmation.html', {'appointment': appointment})

@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %}
+
+{% block title %}Book Appointment{% endblock %}
+
+{% block content %}
+<h2>Book Appointment with Dr. {{ doctor.first_name }} {{ doctor.last_name }}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Confirm Appointment</button>
+</form>
+{% endblock %}
